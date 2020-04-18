@@ -1,4 +1,5 @@
 from load_data import load_dataset
+import datetime
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -82,7 +83,7 @@ class Model():
 
         # Initialize all the variables globally
         init = tf.global_variables_initializer()
-
+        logfile = open('logs/log.txt', 'a')
         # Start the session to compute the tensorflow graph
         with tf.Session() as sess_mdl:
 
@@ -114,26 +115,31 @@ class Model():
                 # Print the cost every epoch
                 if print_cost == True and epoch % 5 == 0:
                     print("Cost after epoch %i: %f" % (epoch, minibatch_cost))
+                    logfile.write("<-----" + str(datetime.datetime.now()) + "----->" + ' \n')
+                    logfile.write("Cost after epoch:    " +str((epoch, minibatch_cost))+'\n')
+
                 if print_cost == True and epoch % 1 == 0:
                     costs.append(minibatch_cost)
-
             # plot the cost
             plt.plot(np.squeeze(costs))
             plt.ylabel('cost')
             plt.xlabel('iterations (per tens)')
             plt.title("Learning rate =" + str(learning_rate))
             plt.show()
-
+            plt.savefig('images/test.png')
             # Calculate the correct predictions
             predict_op = tf.argmax(forward.layer["Z1"], 1)
             correct_prediction = tf.equal(predict_op, tf.argmax(placeholder.Y, 1))
 
             # Calculate accuracy on the test set
             accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+            logfile.write("accuracy:    " + str(accuracy) + '\n')
             print(accuracy)
             train_accuracy = accuracy.eval({placeholder.X: X_train, placeholder.Y: Y_train})
             test_accuracy = accuracy.eval({placeholder.X: X_test, placeholder.Y: Y_test})
+            logfile.write("Train Accuracy:    " + str(train_accuracy) + '\n')
+            logfile.write("Test Accuracy:    " + str(test_accuracy) + '\n')
             print("Train Accuracy:", train_accuracy)
             print("Test Accuracy:", test_accuracy)
-
+            logfile.write("parameters or weights:    " + str(initparams.params) + '\n')
             return train_accuracy, test_accuracy, initparams.params

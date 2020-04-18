@@ -11,12 +11,11 @@ from forward_propag import ForwardPorpagation
 from compute_cost import Costfunc
 from model import Model
 from mini_bach import random_mini_batches
-np.random.seed(1)
 
 """
 def init_params(params, w, dim_w):
     # with tf.variable_scope(w,reuse = tf.AUTO_REUSE):
-    init_w = tf.get_variable(w, dim_w, initializer=tf.contrib.layers.xavier_initializer(seed=0))
+    init_w = tf.get_variable(w, dim_w, initializer=tf.contrib.layers.xavier_initializer())
     params[w] = init_w
     return params
 """
@@ -70,7 +69,7 @@ with tf.Session().as_default() as sess_test:
     print("W2.shape: " + str(my.params["w2"].shape))
 """
 #Forward test
-
+"""
 print("Strat TF Forward_________________")
 L3 = Loaddata()
 L3.load
@@ -82,7 +81,6 @@ L4.norm()
 print(L4)
 tf.reset_default_graph()
 with tf.Session() as sess_test1:
-    np.random.seed(1)
     L5 = CreatePlaceholder()
     L5.createplaceholder(64, 64, 3, 6)
     my = InitParams()
@@ -108,11 +106,11 @@ with tf.Session() as sess_test1:
     a=sess_test1.run(Fw.layer["Z1"],{L5.X:np.random.randn(2,64,64,3),L5.Y:np.random.randn(2,6)})
     print("Z3= \n"+str(a))
 """
+"""
 #test cost
 print("Strat TF cost_________________")
 tf.reset_default_graph()
 with tf.Session() as sess_test1:
-    np.random.seed(1)
     L5 = CreatePlaceholder()
     L5.createplaceholder(64, 64, 3, 6)
     my = InitParams()
@@ -158,8 +156,6 @@ for epoch in range(1):
     seed = seed + 1
     print("MMMM---" + str(num_minibatches))
     #minibatches = random_mini_batches(data_norm.X_train,data_norm.Y_train, 64, seed)
-
-"""
 """
 mymodel=Model()
 data_orgi=Loaddata()
@@ -169,4 +165,3 @@ print("__________orginal data are loaded_________")
 data_norm=NoramlPic(data_orgi.load)
 data_norm.norm()
 mymodel.model(data_norm.X_train,data_norm.Y_train,data_norm.X_test,data_norm.Y_test,data_norm.classes,learning_rate=0.009,num_epochs=100, minibatch_size=64, print_cost=True)
-"""
