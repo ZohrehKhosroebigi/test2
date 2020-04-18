@@ -18,7 +18,7 @@ class Loaddata():##  Load data
     def showpic(self,idx):
         print(Loaddata.X_train_orig[idx].shape)
         plt.imshow(Loaddata.X_train_orig[idx])
-        #plt.show()
+        plt.show()
         print(f'y= {np.squeeze(Loaddata.Y_train_orig[:,idx])}')
 
 
